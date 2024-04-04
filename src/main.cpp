@@ -7,7 +7,7 @@
 
 #include "main.h"
 #include "io.h"
-
+#include "perlin.h"
 
 world_t world;
 
@@ -22,6 +22,7 @@ pair_t all_dirs[8] = {
     {  1,  0 },  // Bottom direction
     {  1,  1 }   // Bottom-right direction
 };
+
 
 
 /*  A new map should be generated if the player
@@ -40,28 +41,35 @@ int generate_new_map(){
 
 
     // TODO: Generate Random Terrain
-    // For now just inititalize terrain with grass and border
+    // TODO: For now just inititalize terrain with grass and border
+    
+    // Perlin perlin;
+    
+    
     int x,y;
     for(y= 0; y<MAP_Y; y++){
         for(x= 0; x<MAP_X; x++){
-            world.curr_map->map[y][x] = ter_grass;
+            world.curr_map->map[y][x] = ter_grass ;
         }
     }
     
     // Border Outlines
-    for(y= 0; y<MAP_Y; y++){
-        for(x= 0; x<MAP_X; x++){
+    for(y= 0; y<MAP_Y; y++)
+    {    
+        for(x= 0; x<MAP_X; x++)
+        {
             world.curr_map->map[0][x] = ter_boulder;
             world.curr_map->map[MAP_Y-1][x] = ter_boulder;
         }
-            world.curr_map->map[y][0] = ter_boulder;
-            world.curr_map->map[y][MAP_X-1] = ter_boulder;
+
+        world.curr_map->map[y][0] = ter_boulder;
+        world.curr_map->map[y][MAP_X-1] = ter_boulder;
     }
 
     return 0;
 }
 
-
+// Initialize world
 void init_world(){
     world.quit = false;
     // First Map is generated at the center of the world
@@ -69,23 +77,33 @@ void init_world(){
     generate_new_map();
 }
 
+void game_loop(){
+    bool on = true;
 
+    while(on){
+
+        io_display();
+        
+        char input = getch();
+        if(input == 'q'){
+            mvprintw(23,1,"Exiting...");
+            on = false;
+        }
+
+        refresh();
+    }
+
+}
 
 
 int main(){   
 
     io_init();
-
     init_world();
-    io_display();
 
-    getch();
-    refresh();
+    game_loop();
 
     io_terminate();
 
-
     return 0;    
 }
-
-

@@ -5,8 +5,8 @@ ECHO = echo
 CXXFLAGS = -Wall -Werror -ggdb
 LDFLAGS = -lncurses
 
-SRCS = main.cpp io.cpp
-OBJS = main.o io.o 
+SRCS = main.cpp io.cpp perlin.cpp
+OBJS = main.o io.o perlin.o
 EXEC = poke_ascii
 
 all: $(EXEC)
