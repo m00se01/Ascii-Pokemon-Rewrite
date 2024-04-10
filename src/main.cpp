@@ -8,6 +8,7 @@
 #include "main.h"
 #include "io.h"
 #include "perlin.h"
+#include "map.h"
 
 world_t world;
 
@@ -24,7 +25,6 @@ pair_t all_dirs[8] = {
 };
 
 
-
 /*  A new map should be generated if the player
     walks into an exit located on the edges of the map 
 */
@@ -39,32 +39,8 @@ int generate_new_map(){
     // Add the map to memory
     world.curr_map = world.world_array[world.curr_index[dim_y]][world.curr_index[dim_x]] = (map_t *) malloc(sizeof (*world.curr_map));
 
+    generate_terrain();
 
-    // TODO: Generate Random Terrain
-    // TODO: For now just inititalize terrain with grass and border
-    
-    // Perlin perlin;
-    
-    
-    int x,y;
-    for(y= 0; y<MAP_Y; y++){
-        for(x= 0; x<MAP_X; x++){
-            world.curr_map->map[y][x] = ter_grass ;
-        }
-    }
-    
-    // Border Outlines
-    for(y= 0; y<MAP_Y; y++)
-    {    
-        for(x= 0; x<MAP_X; x++)
-        {
-            world.curr_map->map[0][x] = ter_boulder;
-            world.curr_map->map[MAP_Y-1][x] = ter_boulder;
-        }
-
-        world.curr_map->map[y][0] = ter_boulder;
-        world.curr_map->map[y][MAP_X-1] = ter_boulder;
-    }
 
     return 0;
 }

@@ -7,31 +7,15 @@
 # include <stdint.h>
 
 # include "utils.h"
+# include "perlin.h"
+# include "map.h"
+# include "io.h"
 
 
 # define MAP_X 80
 # define MAP_Y 21
 # define WORLD_SIZE 401
 
-
-
-typedef enum __attribute__ ((__packed__)) terrain_type {
-  ter_boulder,
-  ter_tree,
-  ter_path,
-  ter_mart,
-  ter_center,
-  ter_grass,
-  ter_clearing,
-  ter_mountain,
-  ter_forest,
-  ter_exit,
-  num_terrain_types
-} terrain_type_t;
-
-typedef struct map {
-    terrain_type_t map[MAP_Y][MAP_X];  
-} map_t;
 
 typedef struct world{
     // Array of map_t pointers

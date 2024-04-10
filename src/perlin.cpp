@@ -2,24 +2,18 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
-#include <iostream>
+#include <stdlib.h>
+#include <fstream>
 
-class Perlin{
+#include "main.h"
+#include "perlin.h"
 
-private:
-    int permutation_table[512];
-    
-    // Linear Interpolation Formula
-    double lerp(double t, double a, double b){
-        return a + t * (b-a);
-    }
-    
-public:
-    Perlin(){
+
+    Perlin::Perlin(){
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<int> dist(0,256);
-    
+        std::uniform_int_distribution<int> dist(0,256);    
+
         // Shuffle
         for (int i = 0; i < 256; ++i) {
             permutation_table[i] = i;
@@ -30,21 +24,26 @@ public:
             permutation_table[i + 256] = permutation_table[i];
         }
     }
+    
 
-    // Fade Function
-    double fade(double t){
+    double Perlin::lerp(double t, double a, double b){
+        return a + t * (b-a);
+    }
+
+
+    double Perlin::fade(double t){
         return t * t * t * (t * (t * 6 - 15) + 10);
     }
 
     // Compute gradient dot product
-    double grad(int hash, double x, double y, double z) {
+    double Perlin::grad(int hash, double x, double y, double z) {
         int h = hash & 15;                      // Convert low 4 bits of hash code into 12 gradient directions
         double u = h < 8 ? x : y,
                v = h < 4 ? y : h == 12 || h == 14 ? x : z;
         return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
     }
 
-    double noise(double x, double y, double z){
+    double Perlin::noise(double x, double y, double z){
         // Unit cube points
         int X = (int)std::floor(x) & 255;
         int Y = (int)std::floor(y) & 255;
@@ -78,28 +77,32 @@ public:
     }
 
 
-    void print_values(int width, int height, double scale){
+    // void Perlin::print_values(int width, int height, double scale){
         
-        double max_noise_value = std::numeric_limits<double>::max();
-        double min_noise_value = std::numeric_limits<double>::min();
+    //     // std::ofstream outfile("perlin_values.txt");
 
-        int i,j;
-        for(i=0; i<height; i++){
-            for(j=0; j<width; j++){
-                double nx = i * scale;
-                double ny = j * scale;
-                double noiseValue = noise(nx,ny,0.0);  //2D noise
+    //     double max_noise_value = std::numeric_limits<double>::min();
+    //     double min_noise_value = std::numeric_limits<double>::max();
 
-                // Normalize
-                max_noise_value = std::max(max_noise_value,noiseValue);
-                min_noise_value = std::min(min_noise_value,noiseValue);
+    //     int i,j;
+    //     for(i=0; i<height; i++){
+    //         for(j=0; j<width; j++){
+    //             double nx = i * scale;
+    //             double ny = j * scale;
+    //             double noiseValue = noise(nx,ny,0.0);  //2D noise
 
-                double normalize_noise_value = (noiseValue - min_noise_value) / (max_noise_value - min_noise_value);
-                std::cout << normalize_noise_value;
-            }
-            std::cout << std::endl;
-        }
-    }
+    //             // Normalize
+    //             max_noise_value = std::max(max_noise_value,noiseValue);
+    //             min_noise_value = std::min(min_noise_value,noiseValue);
 
+    //             double normalize_noise_value = (noiseValue - min_noise_value) / (max_noise_value - min_noise_value);
+    //             // outfile << normalize_noise_value;
+    //             // std::cout << normalize_noise_value;
+    //         }
+    //         // outfile << std::endl;
+    //         // std::cout << std::endl;
+    //     }
 
-};
+    //     // outfile.close();
+    // }
+
